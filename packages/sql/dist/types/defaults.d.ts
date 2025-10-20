@@ -1,0 +1,20 @@
+import * as interpreters from './interpreters';
+export declare const allInterpreters: {
+    in: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<unknown[]>>;
+    eq: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition>;
+    ne: typeof interpreters.eq;
+    lt: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<import("@ucast/core").Comparable>>;
+    lte: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<import("@ucast/core").Comparable>>;
+    gt: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<import("@ucast/core").Comparable>>;
+    gte: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<import("@ucast/core").Comparable>>;
+    exists: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<import("@ucast/core").Comparable>>;
+    within: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<unknown[]>>;
+    nin: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<unknown[]>>;
+    mod: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<[number, number]>>;
+    elemMatch: (condition: import("@ucast/core").FieldCondition<import("@ucast/core").Condition<unknown>>, query: import("./interpreter").Query, context: import("@ucast/core").InterpretationContext<import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<import("@ucast/core").Condition<unknown>>>>) => import("./interpreter").Query;
+    regex: import("./interpreter").SqlOperator<import("@ucast/core").FieldCondition<RegExp>>;
+    not: import("./interpreter").SqlOperator<import("@ucast/core").CompoundCondition<import("@ucast/core").Condition<unknown>>>;
+    and: import("./interpreter").SqlOperator<import("@ucast/core").CompoundCondition<import("@ucast/core").Condition<unknown>>>;
+    or: import("./interpreter").SqlOperator<import("@ucast/core").CompoundCondition<import("@ucast/core").Condition<unknown>>>;
+    nor: import("./interpreter").SqlOperator<import("@ucast/core").CompoundCondition<import("@ucast/core").Condition<unknown>>>;
+};
