@@ -116,7 +116,7 @@
     "mikro-orm": "^3.0.0",
     "objection": "^2.0.0",
     "sequelize": "^5.0.0 || ^6.0.0",
-    "typeorm": "^0.2.0"
+    "typeorm": "^0.3.0"
   },
   "peerDependenciesMeta": {
     "objection": {

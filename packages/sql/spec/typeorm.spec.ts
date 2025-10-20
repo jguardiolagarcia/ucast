@@ -1,7 +1,7 @@
 import { FieldCondition } from '@ucast/core'
 import {
   EntitySchema,
-  createConnection,
+  DataSource,
   SelectQueryBuilder
 } from 'typeorm'
 import { interpret } from '../src/lib/typeorm'
@@ -11,40 +11,40 @@ type Depromisify<T extends Promise<any>> = T extends Promise<infer A> ? A : neve
 type OrmContext = Depromisify<ReturnType<typeof configureORM>>
 
 describe('Condition interpreter for TypeORM', () => {
-  let conn: OrmContext['conn']
+  let dataSource: OrmContext['dataSource']
   let User: OrmContext['User']
 
   before(async () => {
     const ctx = await configureORM()
-    conn = ctx.conn
+    dataSource = ctx.dataSource
     User = ctx.User
   })
 
   after(async () => {
-    await conn.close()
+    await dataSource.destroy()
   })
 
   it('returns a `SelectQueryBuilder<T>`', () => {
     const condition = new FieldCondition('eq', 'name', 'test')
-    const query = interpret(condition, conn.createQueryBuilder(User, 'u'))
+    const query = interpret(condition, dataSource.createQueryBuilder(User, 'u'))
 
     expect(query).to.be.instanceof(SelectQueryBuilder)
     expect(query.getQuery()).to.equal([
       'SELECT "u"."id" AS "u_id", "u"."name" AS "u_name"',
       'FROM "user" "u"',
-      'WHERE "name" = :0'
+      'WHERE "u"."name" = :0'
     ].join(' '))
     expect(query.getParameters()).to.eql({ 0: 'test' })
   })
 
   it('properly binds parameters for "IN" operator', () => {
     const condition = new FieldCondition('in', 'age', [1, 2, 3])
-    const query = interpret(condition, conn.createQueryBuilder(User, 'u'))
+    const query = interpret(condition, dataSource.createQueryBuilder(User, 'u'))
 
     expect(query.getQuery()).to.equal([
       'SELECT "u"."id" AS "u_id", "u"."name" AS "u_name"',
       'FROM "user" "u"',
-      'WHERE "age" in(:0, :1, :2)'
+      'WHERE "u"."age" in(:0, :1, :2)'
     ].join(' '))
 
     expect(query.getParameters()).to.eql({
@@ -56,7 +56,7 @@ describe('Condition interpreter for TypeORM', () => {
 
   it('automatically inner joins relation when condition is set on relation field', () => {
     const condition = new FieldCondition('eq', 'projects.name', 'test')
-    const query = interpret(condition, conn.createQueryBuilder(User, 'u'))
+    const query = interpret(condition, dataSource.createQueryBuilder(User, 'u'))
 
     expect(query.getQuery()).to.equal([
       'SELECT "u"."id" AS "u_id", "u"."name" AS "u_name"',
@@ -109,11 +109,14 @@ async function configureORM() {
     }
   })
 
-  const conn = await createConnection({
+  const dataSource = new DataSource({
     type: 'sqlite',
     database: ':memory:',
-    entities: [UserSchema, ProjectSchema]
+    entities: [UserSchema, ProjectSchema],
+    synchronize: true
   })
 
-  return { User, Project, conn }
+  await dataSource.initialize()
+
+  return { User, Project, dataSource }
 }

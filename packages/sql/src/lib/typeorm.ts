@@ -39,8 +39,9 @@ export function createInterpreter(interpreters: Record<string, SqlOperator<any>>
     condition: Condition,
     query: SelectQueryBuilder<Entity>,
   ) => {
-    const dialect = query.connection.options.type as keyof typeof dialects;
-    const options = dialects[dialect];
+    const connection = query.connection;
+    const dialect = connection.options.type as keyof typeof dialects;
+    const options = { ...dialects[dialect], rootAlias: query.alias };
 
     if (!options) {
       throw new Error(`Unsupported database dialect: ${dialect}`);
