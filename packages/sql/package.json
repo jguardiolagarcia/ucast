@@ -1,7 +1,7 @@
 {
-  "name": "@ucast/sql",
-  "version": "0.0.1",
-  "description": "git@github.com:stalniy/ucast.git",
+  "name": "@jguardiolagarcia/ucast-sql",
+  "version": "1.0.0",
+  "description": "TypeORM 0.3 compatible fork of @ucast/sql - Universal Conditions AST for SQL",
   "main": "dist/es6c/index.js",
   "es2015": "dist/es6m/index.mjs",
   "typings": "dist/types/index.d.ts",
@@ -49,7 +49,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stalniy/ucast.git"
+    "url": "git+https://github.com/jguardiolagarcia/ucast.git",
+    "directory": "packages/sql"
   },
   "publishConfig": {
     "access": "public"
@@ -71,11 +72,14 @@
     "ast"
   ],
   "author": "Sergii Stotskyi <sergiy.stotskiy@gmail.com>",
+  "contributors": [
+    "jguardiolagarcia (TypeORM 0.3 upgrade)"
+  ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/stalniy/ucast/issues"
+    "url": "https://github.com/jguardiolagarcia/ucast/issues"
   },
-  "homepage": "https://github.com/stalniy/ucast#readme",
+  "homepage": "https://github.com/jguardiolagarcia/ucast#readme",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
